@@ -29,7 +29,7 @@ class StripeService
             'line_items' => $items,
             'mode' => 'payment',
             'success_url' => route('payment.stripe.success', ['order' => Crypt::encryptString($order->id)]),
-            'cancel_url' => route('payment.cancel'),
+            'cancel_url' => route('payment.cancel', ['order' => Crypt::encryptString($order->id)]),
         ]);
 
         return new PaymentServiceRedirect(

@@ -61,10 +61,10 @@ class CheckoutController extends Controller
             ->to($response->redirectUrl);
     }
 
-    public function cancelOrder(  ): RedirectResponse
+    public function cancelOrder( string $orderId ): RedirectResponse
     {
-        $cart = $this->cartRepository::getCurrentCart();
-        $cart->order->destroy();
+        $order = Order::where('id', Crypt::decryptString($orderId))->firstOrFail();
+
         return redirect()
             ->route('checkout.payment');
     }

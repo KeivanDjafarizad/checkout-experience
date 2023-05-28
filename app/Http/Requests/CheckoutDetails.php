@@ -30,6 +30,7 @@ class CheckoutDetails extends FormRequest
                 'email',
                 'max:255',
             ],
+            'nation' => 'required|string|max:255',
             'privacy' => 'required|accepted',
             'invoice' => 'sometimes|accepted',
             'newsletter' => 'nullable',
