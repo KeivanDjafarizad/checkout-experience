@@ -3,6 +3,8 @@
 namespace App;
 
 use App\Models\DataTransferObjects\Payment\PaymentServiceRedirect;
+use App\Models\Order;
+use Illuminate\Support\Facades\Crypt;
 
 class StripeService
 {
@@ -10,20 +12,23 @@ class StripeService
         private readonly string $secretKey,
     ) { }
 
-    public function prepareOrder( array $itemList ): PaymentServiceRedirect
+    public function prepareOrder( array $itemList, Order $order ): PaymentServiceRedirect
     {
         \Stripe\Stripe::setApiKey($this->secretKey);
         $items = [];
         foreach($itemList as $item) {
+            $amount = $item->totalDiscounted ?? $item->total;
             $items[] = [
-                'price_data' => $item->product->totalDiscounted ?? $item->product->total,
+                'name' => $item->product->name,
                 'quantity' => $item->quantity,
+                'currency' => 'eur',
+                'amount' => (int) number_format($amount, 2) * 100,
             ];
         }
         $stripeCheckoutSession = \Stripe\Checkout\Session::create([
             'line_items' => $items,
             'mode' => 'payment',
-            'success_url' => route('payment.stripe.success'),
+            'success_url' => route('payment.stripe.success', ['order' => Crypt::encryptString($order->id)]),
             'cancel_url' => route('payment.cancel'),
         ]);
 

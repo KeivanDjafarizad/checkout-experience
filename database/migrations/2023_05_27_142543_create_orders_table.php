@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('cart_id')
                 ->constrained()
                 ->onDelete('cascade');
-            $table->string('payment_id', 100)->unique();
+            $table->string('payment_id', 100)->nullable();
             $table->string('first_name', 100)->nullable();
             $table->string('last_name', 100)->nullable();
             $table->decimal('total', 18, 2)->default(0);
@@ -24,6 +24,7 @@ return new class extends Migration
             $table->json('items')->nullable();
             $table->string('tax_number', 100)->nullable();
             $table->string('tax_code', 100)->nullable();
+            $table->string('status', 100)->default('pending');
             $table->timestamps();
         });
     }

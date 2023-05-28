@@ -44,15 +44,18 @@ class CheckoutController extends Controller
 
     public function managePayment( ManagePayment $request ): RedirectResponse
     {
-        $payment = match($request->validated()['payment']) {
+        $payment = match($request->validated()['payment_type']) {
             'stripe' => new StripeService(config('services.stripe.secret')),
         };
 
-        $response = $payment->prepareOrder($this->cartRepository->getCurrentCart()->items());
-        $order =    $this->orderRepository->createOrder(
+        $order = $this->orderRepository->createOrder(
             $this->cartRepository->getCurrentCart(),
-            $response->paymentId,
         );
+
+        $response = $payment->prepareOrder($this->cartRepository->getCurrentCart()->items(), $order);
+
+        $order->payment_id = $response->paymentId;
+        $order->save();
 
         return redirect()
             ->to($response->redirectUrl);

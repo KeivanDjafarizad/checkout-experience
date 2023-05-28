@@ -33,4 +33,9 @@ Route::group(['prefix' => 'checkout'], function () {
     Route::get('/payment', [\App\Http\Controllers\CheckoutController::class, 'payment'])->name('checkout.payment');
     Route::post('/manage-payment', [\App\Http\Controllers\CheckoutController::class, 'managePayment'])->name('checkout.manage-payment');
     Route::get('/payment-cancel', [\App\Http\Controllers\CheckoutController::class, 'cancelOrder'])->name('payment.cancel');
+    Route::get('/success/{order}', [\App\Http\Controllers\CheckoutController::class, 'paymentSuccess'])->name('checkout.success');
+});
+
+Route::group(['prefix' => 'stripe'], function () {
+    Route::get('/success', [\App\Http\Controllers\Payment\StripeController::class, 'success'])->name('payment.stripe.success');
 });

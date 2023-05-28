@@ -14,9 +14,9 @@
                             </ul>
                         </div>
                     @endif
-                    <input class="p-1 border border-gray-400 rounded-md w-100 mb-2" type="text" name="first-name" placeholder="Nome" />
-                    <input class="p-1 border border-gray-400 rounded-md w-100 mb-2" type="text" name="last-name" placeholder="Cognome" />
-                    <input class="p-1 border border-gray-400 rounded-md w-100 mb-2" type="email" name="email" placeholder="Email" />
+                    <input class="p-1 border border-gray-400 rounded-md w-100 mb-2" type="text" name="first-name" value="{{ old('first-name', $cart->first_name) }}" placeholder="Nome" />
+                    <input class="p-1 border border-gray-400 rounded-md w-100 mb-2" type="text" name="last-name" value="{{ old('last-name', $cart->last_name) }}" placeholder="Cognome" />
+                    <input class="p-1 border border-gray-400 rounded-md w-100 mb-2" type="email" name="email" value="{{ old('email', $cart->email) }}" placeholder="Email" />
                     <select name="nation" class="p-1 border border-gray-400 rounded-md w-100 mb-2 bg-white">
                         <option value="">Nazione</option>
                         <option value="Argentina">Argentina</option>

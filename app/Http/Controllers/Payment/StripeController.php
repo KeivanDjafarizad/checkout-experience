@@ -20,8 +20,10 @@ class StripeController extends Controller
 
     public function success( Request $request )
     {
+        $cart = $this->cartRepository->getCurrentCart();
+        $order = $this->orderRepository->getOrderById(Crypt::decryptString($request->query('order')));
         try {
-            $this->stripeService->confirmOrder($request->query('payment_intent'));
+            $this->stripeService->confirmOrder($order->payment_id);
         } catch (\Exception $e) {
             return redirect()
                 ->route('payment.cancel');

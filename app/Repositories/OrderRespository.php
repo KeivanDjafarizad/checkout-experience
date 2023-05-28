@@ -7,7 +7,7 @@ use App\Models\Order;
 
 class OrderRespository
 {
-    public function createOrder( Cart $cart, string $paymentId ): Order
+    public function createOrder( Cart $cart ): Order
     {
         return Order::create([
             'cart_id' => $cart->id,
@@ -17,7 +17,6 @@ class OrderRespository
             'last_name' => $cart->last_name,
             'tax_code' => $cart->tax_code,
             'tax_number' => $cart->tax_number,
-            'payment_id' => $paymentId,
             'total' => $cart->total,
             'status' => Order::STATUS_PENDING,
         ]);
@@ -26,5 +25,10 @@ class OrderRespository
     public function getOrderByPaymentId( string|null $paymentId ): Order|null
     {
         return Order::where('payment_id', $paymentId)->first();
+    }
+
+    public function getOrderById( string $decryptString )
+    {
+        return Order::find($decryptString);
     }
 }
