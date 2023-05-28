@@ -1,10 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Services;
 
 use App\Models\DataTransferObjects\Payment\PaymentServiceRedirect;
 use App\Models\Order;
 use Illuminate\Support\Facades\Crypt;
+use Stripe\Exception\ApiErrorException;
 
 class StripeService
 {
@@ -12,6 +13,13 @@ class StripeService
         private readonly string $secretKey,
     ) { }
 
+    /**
+     * Prepares a checkout session for Stripe from an order
+     * @param array $itemList
+     * @param Order $order
+     * @return PaymentServiceRedirect
+     * @throws ApiErrorException
+     */
     public function prepareOrder( array $itemList, Order $order ): PaymentServiceRedirect
     {
         \Stripe\Stripe::setApiKey($this->secretKey);
@@ -38,6 +46,12 @@ class StripeService
         );
     }
 
+    /**
+     * Confirms an order from a payment id via Stripe Checkout Session API
+     * @param string $paymentId
+     * @return void
+     * @throws \Exception
+     */
     public function confirmOrder( string $paymentId ): void
     {
         \Stripe\Stripe::setApiKey($this->secretKey);

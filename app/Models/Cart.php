@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\ValueObjects\CartItem;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -31,16 +32,24 @@ class Cart extends Model
         return $this->belongsTo(Coupon::class);
     }
 
-    public function order(  )
+    public function order(  ): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Order::class);
     }
 
+    /**
+     * Returns the number of items in the cart
+     * @return int
+     */
     public function itemsNumber(  ): int
     {
         return isset($this->items) ? array_sum($this->items) : 0;
     }
 
+    /**
+     * Updates the total of the cart
+     * @return void
+     */
     public function updateTotal(  ): void
     {
         $skus = array_keys($this->items);
@@ -62,6 +71,10 @@ class Cart extends Model
         $this->save();
     }
 
+    /**
+     * Returns the cart items as an array of CartItem objects
+     * @return array<CartItem>
+     */
     public function items(  ): array
     {
         if(!isset($this->items)) {
@@ -79,7 +92,7 @@ class Cart extends Model
             ) {
                 $discountedPrice = $product->price - ($product->price * $this->coupon->amount);
             }
-            $items[] = new ValueObjects\CartItem(
+            $items[] = new CartItem(
                 $product->sku,
                 $this->items[$product->sku],
                 $product,

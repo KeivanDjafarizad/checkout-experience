@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\StripeService;
+use App\Services\StripeService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

@@ -9,6 +9,10 @@ use App\Models\ValueObjects\CartItemToAdd;
 
 class CartRepository
 {
+    /**
+     * Returns the current cart from the session or creates a new one
+     * @return Cart
+     */
     public static function getCurrentCart(  ): Cart
     {
         $cartId = session('cart_id');
@@ -25,6 +29,13 @@ class CartRepository
         return Cart::where('session_id', $cartId)->first();
     }
 
+    /**
+     * Adds a product to the cart
+     * @param Cart $cart
+     * @param CartItemToAdd $item
+     * @return void
+     * @throws \Exception
+     */
     public function editProductInCart( Cart $cart, CartItemToAdd $item ): void
     {
         $items = $cart->items;
@@ -46,6 +57,13 @@ class CartRepository
         $cart->save();
     }
 
+
+    /**
+     * Adds the checkout details to the cart
+     * @param Cart $cart
+     * @param CheckoutDetails $details
+     * @return void
+     */
     public function addDetailsToCart( Cart $cart, CheckoutDetails $details ): void
     {
         $cart->update($details->toCartUpdateArray());

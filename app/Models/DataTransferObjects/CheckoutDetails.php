@@ -4,6 +4,18 @@ namespace App\Models\DataTransferObjects;
 
 final class CheckoutDetails
 {
+    /**
+     * Creates a new checkout details object to be added to the cart
+     *
+     * @param string $firstName
+     * @param string $lastName
+     * @param string $email
+     * @param string $nation
+     * @param string|null $fiscalTaxNumber
+     * @param string|null $fiscalCodeNumber
+     * @param bool $newsletter
+     * @param bool $invoice
+     */
     public function __construct(
         public readonly string $firstName,
         public readonly string $lastName,

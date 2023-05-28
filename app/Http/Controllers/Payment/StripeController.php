@@ -3,22 +3,27 @@
 namespace App\Http\Controllers\Payment;
 
 use App\Http\Controllers\Controller;
-use App\Models\Order;
 use App\Repositories\CartRepository;
-use App\Repositories\OrderRespository;
-use App\StripeService;
+use App\Repositories\OrderRepository;
+use App\Services\StripeService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
 class StripeController extends Controller
 {
     public function __construct(
-        private readonly StripeService $stripeService,
-        private readonly OrderRespository $orderRepository,
-        private readonly CartRepository $cartRepository,
+        private readonly StripeService   $stripeService,
+        private readonly OrderRepository $orderRepository,
+        private readonly CartRepository  $cartRepository,
     ) { }
 
-    public function success( Request $request )
+    /**
+     * Manages response from Stripe
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function success( Request $request ): RedirectResponse
     {
         $cart = $this->cartRepository->getCurrentCart();
         $order = $this->orderRepository->getOrderById(Crypt::decryptString($request->query('order')));

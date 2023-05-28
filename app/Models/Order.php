@@ -29,7 +29,7 @@ class Order extends Model
         'status',
     ];
 
-    public function cart(  )
+    public function cart(  ): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Cart::class);
     }

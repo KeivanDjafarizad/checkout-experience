@@ -18,6 +18,10 @@ class CartController extends Controller
         private readonly CartRepository $cartRepository,
     ) { }
 
+    /**
+     * Shows the cart page
+     * @return View
+     */
     public function index(  ): View
     {
         $cart = $this->cartRepository::getCurrentCart();
@@ -29,6 +33,11 @@ class CartController extends Controller
         );
     }
 
+    /**
+     * Adds or removes a product from the cart
+     * @param EditCart $request
+     * @return JsonResponse
+     */
     public function edit( EditCart $request ): JsonResponse
     {
         $cart = $this->cartRepository::getCurrentCart();
@@ -45,11 +54,11 @@ class CartController extends Controller
         }
     }
 
-    public function remove( EditCart $request )
-    {
-        
-    }
-
+    /**
+     * Adds a coupon to the cart
+     * @param AddCoupon $request
+     * @return RedirectResponse
+     */
     public function addCoupon( AddCoupon $request ): RedirectResponse
     {
         $cart = $this->cartRepository::getCurrentCart();
@@ -66,6 +75,10 @@ class CartController extends Controller
             ->back();
     }
 
+    /**
+     * Removes a coupon from the cart
+     * @return RedirectResponse
+     */
     public function removeCoupon(  ): RedirectResponse
     {
         $cart = $this->cartRepository::getCurrentCart();
