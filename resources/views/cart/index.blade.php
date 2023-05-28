@@ -26,6 +26,7 @@
             </div>
         @endforeach
     </section>
+
     <section class="mt-6">
         <div class="bg-white p-6 rounded-md shadow-sm">
             @error('coupon')
@@ -45,7 +46,7 @@
             @else
                 <form action="{{ route('cart.coupon') }}" method="POST">
                     @csrf
-                    <div class="flex justify-between items-center">
+                    <div class="flex justify-between md:items-center md:flex-row flex-col items-start">
                         <label for="coupon" class="font-bold text-lg">Add Coupon</label>
                         <div class="flex gap-3 items-center">
                             <input
@@ -61,6 +62,7 @@
             @endif
         </div>
     </section>
+
     <section class="mt-6">
         <div class="bg-white p-6 rounded-md shadow-sm">
             <div class="flex justify-between items-baseline mb-3">

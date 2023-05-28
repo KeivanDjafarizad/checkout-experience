@@ -1,6 +1,6 @@
 <x-layout>
-<h1>Payment</h1>
-    <div class="bg-white p-5 rounded shadow-sm">
+    <div class="bg-white p-5 rounded shadow-sm mb-5">
+        <h1 class="text-2xl font-bold text-slate-800 mb-4">Payment</h1>
         @foreach($cart->items() as $item)
             <div class="bg-white p-2 mb-3">
                 <div class="flex justify-between items-baseline mb-3">
@@ -12,6 +12,15 @@
         @endforeach
     </div>
     <div class="bg-white p-5 rounded shadow-sm">
+        @if($errors->any())
+            <div class="bg-red-500 text-white p-2 rounded-md mb-2">
+                <ul class="list-disc list-inside">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <form action="{{ route('checkout.manage-payment') }}" method="POST">
             @csrf
             <section class="payment">

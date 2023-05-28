@@ -1,7 +1,7 @@
 <x-layout>
-    <h3>Dati utente</h3>
-    <section class="flex gap-1">
+    <section class="flex gap-1 justify-center">
         <form action="{{ route('checkout.details') }}" method="POST" class="bg-white p-5 rounded-md shadow-sm">
+            <h1 class="text-2xl font-bold text-slate-800 mb-4">Dati utente</h1>
             @csrf
             <section class="flex flex-col mb-5">
                 <div class="flex flex-col mb-5">

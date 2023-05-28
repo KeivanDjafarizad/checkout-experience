@@ -1,7 +1,7 @@
 <x-layout>
     <section class="flex gap-1 flex-wrap justify-center">
         @foreach($products as $product)
-            <div class="bg-white p-6 rounded-md shadow-sm w-1/4">
+            <div class="bg-white p-6 rounded-md shadow-sm md:w-1/4 w-100">
                 <h3 class="text-lg font-bold">
                     {{ $product->name }}
                 </h3>
