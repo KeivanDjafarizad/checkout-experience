@@ -1,66 +1,64 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Checkout experience
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Descrizione
 
-## About Laravel
+Il progetto consiste nella realizzazione di un sistema di checkout per un negozio di vendita al dettaglio. Il sistema deve essere in grado di calcolare il prezzo totale di una serie di prodotti, tenendo conto di eventuali sconti applicati.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Technology stack
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Laravel 10
+- PHP 8.1
+- SQLite
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Ho scelto di utilizzare Laravel perché è un framework molto flessibile, facile da leggere ma molto completo e permette di
+scrivere codice pulito ed esplicito, in modo che sia leggibile sia a junior dev che a senior. Non di meno è in grado di gestire
+strutture di media complessità, come nel caso di questo progetto. 
 
-## Learning Laravel
+Nonostante sia un framework che tende al monolite come soluzione,
+è possibile utilizzare costrutti tipici del Domain Driven Design, come in questo caso, come Repository e Service.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Inoltre gestisce in maniera abbastanza esplicita e facile le sessioni, la connessione a database e la gestione delle rotte.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Miglioramenti e criticità
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- L'integrazione di pagamento è molto basilare, si può decidere di integrare il proprio ecommerce in maniera più
+profonda con Stripe, caricando i prodotti e le categorie, ma questo potrebbe restringere il campo di operatività degli sconti.
 
-## Laravel Sponsors
+- Non ho implementato l'aggiornamento dinamico dell'header del carrello, ma è possibile farlo utilizzando un ViewComposer offerto da Laravel,
+renderizzare il componente via server e sostituire il contenuto del carrello con quello nuovo.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+- Medesima cosa per l'aggiunta al carrello e la rimozione, sarebbe opportuno usare una libreria js come Toast per mostrare un messaggio di successo o fallimento
 
-### Premium Partners
+- Si potrebbe meglio definire come vogliamo funzionino gli sconti. Al momento sono solo sconti percentuali sui prodotti, e non è ben specificato price_min e price_max a cosa si riferiscano. Un possibile miglioramento
+sarebbe quello di permettere anche sconti fissi direttamente sul prodotto o sul carrello, cumulabili o meno.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+- Non mi convince la gestione dei prezzi con i numeri decimali, ho trovato successo utilizzando l'approccio stripe di utilizzare interi centesimali, diventa anche facile castarli con uno specifico **Value Object**.
+- Salverei più dati nel campo items del database del carrello e dell'ordine, in modo da mantenere lo storico dei prezzi e sconti applicati anche nel momento in cui il prezzo del prodotto cambi, mantenendo così la coerenza dei dati.
 
-## Contributing
+## Deploy
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Il deploy di questa soluzione può essere eseguito tranquillamente su infrastruttura docker. Infatti è stato sviluppato in un ambiente dockerizzato, con
+un container nginx che gestiva il webserver e un container php-fpm che gestiva l'applicazione. Per il database ho utilizzato sqlite, ma è possibile collegarsi 
+ad un'istanza mysql o postgresql sia dockerizzata che esterna. Così facendo abbiamo una soluzione replicabile ed eventualmente gestibile via load balancer.
 
-## Code of Conduct
+Laravel ci permette di utilizzare Redis per gestire le sessioni, per gestire code e per gestire la cache. Può essere usato un contianer dedicato o un'istanza esterna. Ha integrazione nativa anche con SQS di AWS e con Kafka.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Un'eventuale semplcie pipeline di deploy potrebbe comprendere in ordine:
 
-## Security Vulnerabilities
+- Creazioen di istanza php
+- Controllo dello standard del codice via PHPStan (con integrazione LaraStan)
+- installazione di dipendenze composer e di dipendenze npm
+- esecuzione di test unitari e di integrazione
+- refresh del database ed eventuale seeding con i dati di produzione base
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Installazione
 
-## License
+Una volta clonato il repository (che comprende anche il file di database sqlite, non necessario), basterà copiare il file .env.example in .env, modificare le variabili di ambiente necessarie e lanciare i seguenti comandi:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+composer install
+php artisan key:generate
+php artisan migrate:fresh --seed
+```
+
+Sarà disponibile un database riempito di dati di test, ma utilizzabile ai fini della soluzione
