@@ -19,21 +19,22 @@ Nonostante sia un framework che tende al monolite come soluzione,
 
 Inoltre gestisce in maniera abbastanza esplicita e facile le sessioni, la connessione a database e la gestione delle rotte.
 
+In frontend ho optato per l'utilizzo di TailwindCSS, estremamente comodo per stilare l'HTML senza mai abbandonare il codice, estendibile facilmente.
+
+
+
 ## Miglioramenti e criticità
 
 - L'integrazione di pagamento è molto basilare, si può decidere di integrare il proprio ecommerce in maniera più
 profonda con Stripe, caricando i prodotti e le categorie, ma questo potrebbe restringere il campo di operatività degli sconti.
-
 - Non ho implementato l'aggiornamento dinamico dell'header del carrello, ma è possibile farlo utilizzando un ViewComposer offerto da Laravel,
 renderizzare il componente via server e sostituire il contenuto del carrello con quello nuovo.
-
 - Medesima cosa per l'aggiunta al carrello e la rimozione, sarebbe opportuno usare una libreria js come Toast per mostrare un messaggio di successo o fallimento
-
 - Si potrebbe meglio definire come vogliamo funzionino gli sconti. Al momento sono solo sconti percentuali sui prodotti, e non è ben specificato price_min e price_max a cosa si riferiscano. Un possibile miglioramento
 sarebbe quello di permettere anche sconti fissi direttamente sul prodotto o sul carrello, cumulabili o meno.
-
 - Non mi convince la gestione dei prezzi con i numeri decimali, ho trovato successo utilizzando l'approccio stripe di utilizzare interi centesimali, diventa anche facile castarli con uno specifico **Value Object**.
 - Salverei più dati nel campo items del database del carrello e dell'ordine, in modo da mantenere lo storico dei prezzi e sconti applicati anche nel momento in cui il prezzo del prodotto cambi, mantenendo così la coerenza dei dati.
+- Lato frontend nulla è stato bundlizzato. Un'evoluzione sarebbe quella di utilizzare Vite per gestire bundling e compilazione di eventuali asset JS e CSS (TailwindCSS in questo caso).
 
 ## Deploy
 
